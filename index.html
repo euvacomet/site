@@ -16,19 +16,49 @@
     color: #eee;
   }
 
+  .background {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(900px 600px at 20% 20%, rgba(80,100,140,0.18), transparent 60%),
+      radial-gradient(700px 500px at 80% 35%, rgba(60,60,90,0.18), transparent 55%),
+      radial-gradient(1000px 700px at 50% 80%, rgba(40,40,60,0.25), transparent 60%),
+      linear-gradient(#05060a, #080b18 60%, #04050a);
+  }
+
+  .fog {
+    position: absolute;
+    inset: -40%;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255,255,255,.08), transparent 45%),
+      radial-gradient(circle at 70% 60%, rgba(255,255,255,.06), transparent 48%);
+    filter: blur(18px);
+    opacity: .9;
+    animation: fogMove 22s linear infinite;
+  }
+
+  @keyframes fogMove {
+    0% { transform: translate(-4%, -2%) scale(1.05); }
+    50% { transform: translate(4%, 2%) scale(1.08); }
+    100% { transform: translate(-4%, -2%) scale(1.05); }
+  }
+
   .container {
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    z-index: 2;
   }
 
   .bell {
     width: min(380px, 75vw);
     transform-origin: 50% 0%;
     animation: swing 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 16px 30px rgba(0,0,0,0.7));
   }
 
   @keyframes swing {
@@ -38,16 +68,27 @@
   }
 
   h1 {
-    margin-top: 20px;
-    font-size: 32px;
+    margin-top: 22px;
+    font-size: clamp(22px, 4vw, 36px);
+    letter-spacing: 1px;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    opacity: 0.75;
   }
 </style>
 </head>
 
 <body>
+  <div class="background"></div>
+  <div class="fog"></div>
+
   <div class="container">
-    <img src="bell.png" class="bell" alt="Bell">
+    <img src="bell.png" class="bell" alt="Metal bell">
     <h1>Under Construction</h1>
+    <p>Non-commercial academic research project</p>
   </div>
 </body>
 </html>
