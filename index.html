@@ -36,20 +36,34 @@ body {
   position: relative;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 2;
 }
 
-/* WRAPPER – handles motion */
+/* WRAPPER – handles motion (bell only) */
 .bell-wrapper {
-  animation: drift 4s ease-in-out infinite;
-  margin-top: -290px;
+  animation: drift 6s ease-in-out infinite;
+  margin-top: -140px;
 }
+
 /* BELL – visual only */
 .bell {
   width: min(420px, 75vw);
   filter: drop-shadow(0 25px 35px rgba(0,0,0,0.85));
+}
+
+/* TAGLINE – static */
+.tagline {
+  margin-top: 18px;
+  font-size: 15px;
+  letter-spacing: 1.2px;
+  opacity: 0.35;
+  color: #ffffff;
+  text-transform: lowercase;
+  text-align: center;
+  pointer-events: none;
 }
 
 /* SIDE TO SIDE MOTION */
@@ -59,19 +73,11 @@ body {
   100% { transform: translateX(-8px); }
 }
 
-/* Respect reduced motion */
+/* Accessibility: reduce motion if user prefers */
 @media (prefers-reduced-motion: reduce) {
   .bell-wrapper {
     animation: none;
   }
-}
-.tagline {
-  margin-top: 14px;
-  font-size: 15px;
-  letter-spacing: 1.2px;
-  opacity: 0.35;
-  color: #ffffff;
-  text-transform: lowercase;
 }
 </style>
 </head>
@@ -85,7 +91,7 @@ body {
       <img src="bells.png" class="bell" alt="Under Construction Bell">
     </div>
 
-    <div class="tagline">"…where AI meets math in logistics"</div>
+    <div class="tagline">…where AI meets math in logistics</div>
   </div>
 
 </body>
