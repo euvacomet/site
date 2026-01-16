@@ -21,40 +21,41 @@ body {
 
 /* DARK ATMOSPHERE OVERLAY */
 .overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: radial-gradient(
     ellipse at center,
-    rgba(0,0,0,0.3),
+    rgba(0,0,0,0.25),
     rgba(0,0,0,0.9)
   );
   z-index: 1;
 }
 
-/* CENTER CONTENT */
+/* MAIN CONTAINER (reference only) */
 .container {
   position: relative;
+  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 2;
 }
 
-/* WRAPPER – handles motion (bell only) */
+/* BELL WRAPPER — FIXED TO TOP */
 .bell-wrapper {
+  position: absolute;
+  top: 6vh;                 /* tavandan sarkma hissi */
+  left: 50%;
+  transform: translateX(-50%);
   animation: drift 6s ease-in-out infinite;
-  margin-top: -140px;
+  text-align: center;
 }
 
-/* BELL – visual only */
+/* BELL IMAGE */
 .bell {
   width: min(420px, 75vw);
   filter: drop-shadow(0 25px 35px rgba(0,0,0,0.85));
 }
 
-/* TAGLINE – static */
+/* TAGLINE — STABLE */
 .tagline {
   margin-top: 18px;
   font-size: 15px;
@@ -62,21 +63,31 @@ body {
   opacity: 0.35;
   color: #ffffff;
   text-transform: lowercase;
-  text-align: center;
   pointer-events: none;
 }
 
 /* SIDE TO SIDE MOTION */
 @keyframes drift {
-  0%   { transform: translateX(-8px); }
-  50%  { transform: translateX(8px); }
-  100% { transform: translateX(-8px); }
+  0%   { transform: translateX(-50%) translateX(-8px); }
+  50%  { transform: translateX(-50%) translateX(8px); }
+  100% { transform: translateX(-50%) translateX(-8px); }
 }
 
-/* Accessibility: reduce motion if user prefers */
+/* ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
   .bell-wrapper {
     animation: none;
+  }
+}
+
+/* MOBILE FINE TUNING */
+@media (max-width: 600px) {
+  .bell-wrapper {
+    top: 7vh;
+  }
+
+  .tagline {
+    font-size: 13px;
   }
 }
 </style>
@@ -89,9 +100,8 @@ body {
   <div class="container">
     <div class="bell-wrapper">
       <img src="bells.png" class="bell" alt="Under Construction Bell">
+      <div class="tagline">…where AI meets math in logistics</div>
     </div>
-
-    <div class="tagline">…where AI meets math in logistics</div>
   </div>
 
 </body>
