@@ -11,7 +11,8 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Inter, Helvetica, Arial, sans-serif;
 }
 
 /* FULL SCREEN CLOUD BACKGROUND */
@@ -31,7 +32,7 @@ body {
   z-index: 1;
 }
 
-/* MAIN CONTAINER (reference only) */
+/* PAGE REFERENCE */
 .container {
   position: relative;
   width: 100%;
@@ -39,34 +40,37 @@ body {
   z-index: 2;
 }
 
-/* BELL WRAPPER — FIXED TO TOP */
+/* 🔔 BELL – MOVES */
 .bell-wrapper {
   position: absolute;
-  top: 6vh;                 /* tavandan sarkma hissi */
+  top: -40px;                 /* zincir tavana değsin hissi */
   left: 50%;
   transform: translateX(-50%);
   animation: drift 6s ease-in-out infinite;
   text-align: center;
 }
 
-/* BELL IMAGE */
 .bell {
   width: min(420px, 75vw);
   filter: drop-shadow(0 25px 35px rgba(0,0,0,0.85));
 }
 
-/* TAGLINE — STABLE */
+/* ✍️ TAGLINE – COMPLETELY STATIC */
 .tagline {
-  margin-top: 18px;
-  font-size: 15px;
-  letter-spacing: 1.2px;
-  opacity: 0.35;
-  color: #ffffff;
+  position: absolute;
+  top: calc(-40px + min(420px, 75vw) + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  letter-spacing: 1.6px;
+  color: rgba(255,255,255,0.35);
   text-transform: lowercase;
+  text-align: center;
+  white-space: nowrap;
   pointer-events: none;
 }
 
-/* SIDE TO SIDE MOTION */
+/* BELL MOTION ONLY */
 @keyframes drift {
   0%   { transform: translateX(-50%) translateX(-8px); }
   50%  { transform: translateX(-50%) translateX(8px); }
@@ -80,14 +84,15 @@ body {
   }
 }
 
-/* MOBILE FINE TUNING */
+/* MOBILE TUNING */
 @media (max-width: 600px) {
   .bell-wrapper {
-    top: 7vh;
+    top: -20px;
   }
 
   .tagline {
-    font-size: 13px;
+    font-size: 12px;
+    letter-spacing: 1.3px;
   }
 }
 </style>
@@ -98,10 +103,17 @@ body {
   <div class="overlay"></div>
 
   <div class="container">
+
+    <!-- MOVING BELL -->
     <div class="bell-wrapper">
       <img src="bells.png" class="bell" alt="Under Construction Bell">
-      <div class="tagline">…where AI meets math in logistics</div>
     </div>
+
+    <!-- STATIC TEXT -->
+    <div class="tagline">
+      …where AI meets math in logistics
+    </div>
+
   </div>
 
 </body>
