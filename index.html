@@ -43,7 +43,7 @@ body {
 /* 🔔 BELL – MOVES */
 .bell-wrapper {
   position: absolute;
-  top: -40px;                 /* zincir tavana değsin hissi */
+  top: -40px;                 /* zincir tavana yakın */
   left: 50%;
   transform: translateX(-50%);
   animation: drift 6s ease-in-out infinite;
@@ -55,16 +55,15 @@ body {
   filter: drop-shadow(0 25px 35px rgba(0,0,0,0.85));
 }
 
-/* ✍️ TAGLINE – COMPLETELY STATIC */
+/* ✍️ TAGLINE – STATIC & CLEAN */
 .tagline {
   position: absolute;
-  top: calc(-40px + min(420px, 75vw) + 28px);
+  top: calc(-40px + min(420px, 75vw) + 42px); /* ← DAHA AŞAĞI */
   left: 50%;
   transform: translateX(-50%);
   font-size: 14px;
   letter-spacing: 1.6px;
   color: rgba(255,255,255,0.35);
-  text-transform: lowercase;
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
@@ -91,6 +90,7 @@ body {
   }
 
   .tagline {
+    top: calc(-20px + min(320px, 80vw) + 36px);
     font-size: 12px;
     letter-spacing: 1.3px;
   }
@@ -111,7 +111,7 @@ body {
 
     <!-- STATIC TEXT -->
     <div class="tagline">
-      …where AI meets math in logistics
+      …where <strong>AI</strong> meets math in logistics
     </div>
 
   </div>
