@@ -1,120 +1,149 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Under Construction</title>
+<meta charset="UTF-8">
+<title>INNLOS — Loading</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
 <style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Inter, Helvetica, Arial, sans-serif;
-}
-
-/* FULL SCREEN CLOUD BACKGROUND */
 body {
-  background: url("clouds.png") center center / cover no-repeat;
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at center, #003b1f 0%, #000 70%);
+  font-family: 'VT323', monospace;
+  color: #00ff66;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* DARK ATMOSPHERE OVERLAY */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0.9)
-  );
-  z-index: 1;
+/* TERMINAL */
+.terminal {
+  width: min(90vw, 720px);
+  padding: 40px;
+  text-align: left;
 }
 
-/* PAGE REFERENCE */
-.container {
-  position: relative;
-  width: 100%;
+/* TEXT */
+.line {
+  font-size: 22px;
+  line-height: 1.6;
+  text-shadow: 0 0 8px rgba(0,255,102,0.6);
+}
+
+.title {
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+.dim {
+  opacity: 0.6;
+}
+
+.gap {
+  height: 18px;
+}
+
+/* LOADING BAR */
+.loading {
+  margin-top: 30px;
+}
+
+.bar {
+  width: 320px;
+  height: 18px;
+  border: 2px solid #00ff66;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.fill {
   height: 100%;
-  z-index: 2;
+  width: 0%;
+  background: #00ff66;
 }
 
-/* 🔔 BELL – MOVES */
-.bell-wrapper {
-  position: absolute;
-  top: -40px;                 /* zincir tavana yakın */
-  left: 50%;
-  transform: translateX(-50%);
-  animation: drift 6s ease-in-out infinite;
-  text-align: center;
-}
-
-.bell {
-  width: min(420px, 75vw);
-  filter: drop-shadow(0 25px 35px rgba(0,0,0,0.85));
-}
-
-/* ✍️ TAGLINE – STATIC & CLEAN */
-.tagline {
-  position: absolute;
-  top: calc(-40px + min(420px, 75vw) + 150px); /* ← DAHA AŞAĞI */
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  letter-spacing: 1.6px;
-  color: rgba(255,255,255,0.35);
-  text-align: center;
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-/* BELL MOTION ONLY */
-@keyframes drift {
-  0%   { transform: translateX(-50%) translateX(-8px); }
-  50%  { transform: translateX(-50%) translateX(8px); }
-  100% { transform: translateX(-50%) translateX(-8px); }
-}
-
-/* ACCESSIBILITY */
-@media (prefers-reduced-motion: reduce) {
-  .bell-wrapper {
-    animation: none;
-  }
-}
-
-/* MOBILE TUNING */
-@media (max-width: 600px) {
-  .bell-wrapper {
-    top: -20px;
-  }
-
-  .tagline {
-    top: calc(-20px + min(320px, 80vw) + 36px);
-    font-size: 12px;
-    letter-spacing: 1.3px;
-  }
+.percent {
+  margin-top: 6px;
+  font-size: 20px;
 }
 </style>
 </head>
 
 <body>
+<div class="terminal">
 
-  <div class="overlay"></div>
+  <div class="line title">INNLOS v0.1.0</div>
 
-  <div class="container">
+  <div class="gap"></div>
 
-    <!-- MOVING BELL -->
-    <div class="bell-wrapper">
-      <img src="bells.png" class="bell" alt="Under Construction Bell">
+  <div class="line">&gt; status: UNDER CONSTRUCTION_</div>
+
+  <div class="gap"></div>
+
+  <div class="line">&lt;innlos.environment&gt;</div>
+  <div class="line">&gt; where AI meets math in logistics!</div>
+
+  <div class="loading">
+    <div class="line">NOW LOADING</div>
+    <div class="bar">
+      <div class="fill" id="fill"></div>
     </div>
-
-    <!-- STATIC TEXT -->
-    <div class="tagline">
-      "…where <strong>AI</strong> meets math in logistics!"
-    </div>
-
+    <div class="percent" id="percent">0%</div>
+    <div class="line dim">PLEASE WAIT</div>
   </div>
+
+</div>
+
+<script>
+const fill = document.getElementById("fill");
+const percentText = document.getElementById("percent");
+
+const steps = [
+  { to: 8, delay: 400 },
+  { to: 21, delay: 900 },
+  { to: 37, delay: 600 },
+  { to: 34, delay: 800 }, // geri gider
+  { to: 58, delay: 700 },
+  { to: 72, delay: 1500 }, // uzun bekleme
+  { to: 100, delay: 500 }
+];
+
+let current = 0;
+let stepIndex = 0;
+
+function runLoading() {
+  if (stepIndex >= steps.length) {
+    setTimeout(() => {
+      current = 0;
+      stepIndex = 0;
+      fill.style.width = "0%";
+      percentText.textContent = "0%";
+      runLoading();
+    }, 1200);
+    return;
+  }
+
+  const target = steps[stepIndex].to;
+  const delay = steps[stepIndex].delay;
+
+  const interval = setInterval(() => {
+    if (current === target) {
+      clearInterval(interval);
+      stepIndex++;
+      setTimeout(runLoading, delay);
+    } else {
+      current += current < target ? 1 : -1;
+      fill.style.width = current + "%";
+      percentText.textContent = current + "%";
+    }
+  }, 30);
+}
+
+runLoading();
+</script>
 
 </body>
 </html>
