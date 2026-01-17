@@ -2,15 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>INNLOS — Loading</title>
+<title>INNLOS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
 <style>
-body {
+html, body {
   margin: 0;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+}
+
+body {
   background: radial-gradient(circle at center, #003b1f 0%, #000 70%);
   font-family: 'VT323', monospace;
   color: #00ff66;
@@ -23,6 +27,7 @@ body {
 .terminal {
   width: min(90vw, 720px);
   padding: 40px;
+  box-sizing: border-box;
   text-align: left;
 }
 
@@ -84,7 +89,7 @@ body {
   <div class="gap"></div>
 
   <div class="line">&lt;innlos.environment&gt;</div>
-  <div class="line">&gt; where AI meets math in logistics!</div>
+  <div class="line">&gt; <span id="typedText"></span></div>
 
   <div class="loading">
     <div class="line">NOW LOADING</div>
@@ -92,7 +97,10 @@ body {
       <div class="fill" id="fill"></div>
     </div>
     <div class="percent" id="percent">0%</div>
-    <div class="line dim">PLEASE WAIT</div>
+    <div class="line dim" id="error" style="display:none;">
+      ERROR: unexpected memory fault<br>
+      retrying...
+    </div>
   </div>
 
 </div>
@@ -100,29 +108,46 @@ body {
 <script>
 const fill = document.getElementById("fill");
 const percentText = document.getElementById("percent");
+const errorText = document.getElementById("error");
+const typedText = document.getElementById("typedText");
+
+const sentence = "where AI meets math in logistics!";
+const totalChars = sentence.length;
 
 const steps = [
   { to: 8, delay: 400 },
   { to: 21, delay: 900 },
   { to: 37, delay: 600 },
-  { to: 34, delay: 800 }, // geri gider
+  { to: 34, delay: 800 },   // geri gider
   { to: 58, delay: 700 },
-  { to: 72, delay: 1500 }, // uzun bekleme
+  { to: 72, delay: 1500 },  // uzun bekleme
   { to: 100, delay: 500 }
 ];
 
 let current = 0;
 let stepIndex = 0;
 
+function syncTextWithProgress() {
+  const charsToShow = Math.floor((current / 100) * totalChars);
+  typedText.textContent = sentence.substring(0, charsToShow);
+}
+
+function resetLoading() {
+  current = 0;
+  stepIndex = 0;
+  fill.style.width = "0%";
+  percentText.textContent = "0%";
+  typedText.textContent = "";
+  errorText.style.display = "none";
+  setTimeout(runLoading, 800);
+}
+
 function runLoading() {
   if (stepIndex >= steps.length) {
+    errorText.style.display = "block";
     setTimeout(() => {
-      current = 0;
-      stepIndex = 0;
-      fill.style.width = "0%";
-      percentText.textContent = "0%";
-      runLoading();
-    }, 1200);
+      resetLoading();
+    }, 1600);
     return;
   }
 
@@ -138,6 +163,7 @@ function runLoading() {
       current += current < target ? 1 : -1;
       fill.style.width = current + "%";
       percentText.textContent = current + "%";
+      syncTextWithProgress();
     }
   }, 30);
 }
